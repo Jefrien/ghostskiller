@@ -1,7 +1,17 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://fonts/Exo2-MediumItalic.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://scripts/Menu.gd" type="Script" id=2]
+[ext_resource path="res://sprites/level/background1.png" type="Texture" id=3]
+[ext_resource path="res://sprites/level/background2.png" type="Texture" id=4]
+[ext_resource path="res://sprites/level/background3.png" type="Texture" id=5]
+[ext_resource path="res://fonts/NokiaCellphoneFC.ttf" type="DynamicFontData" id=6]
+
+[sub_resource type="DynamicFont" id=2]
+size = 150
+outline_size = 5
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 6 )
 
 [sub_resource type="DynamicFont" id=1]
 size = 50
@@ -11,6 +21,45 @@ font_data = ExtResource( 1 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 2 )
+
+[node name="BGParallax" type="ParallaxBackground" parent="."]
+follow_viewport_enable = true
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="BGParallax"]
+motion_mirroring = Vector2( 1920, 0 )
+
+[node name="Background1" type="Sprite" parent="BGParallax/ParallaxLayer"]
+position = Vector2( 958.889, 544 )
+scale = Vector2( 4.03704, 4.03704 )
+z_index = -2
+texture = ExtResource( 3 )
+
+[node name="BGParallax2" type="ParallaxBackground" parent="."]
+follow_viewport_enable = true
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="BGParallax2"]
+motion_mirroring = Vector2( 1920, 0 )
+
+[node name="Background2" type="Sprite" parent="BGParallax2/ParallaxLayer"]
+position = Vector2( 964.351, 543.5 )
+scale = Vector2( 4.04313, 4.12963 )
+z_index = 2
+texture = ExtResource( 4 )
+
+[node name="Background3" type="Sprite" parent="."]
+position = Vector2( 945.889, 541.5 )
+scale = Vector2( 4.11482, 4.11481 )
+texture = ExtResource( 5 )
+
+[node name="Label" type="Label" parent="."]
+anchor_right = 1.0
+margin_top = 50.0
+margin_bottom = 100.0
+custom_colors/font_color = Color( 0.909804, 0.866667, 0.372549, 1 )
+custom_fonts/font = SubResource( 2 )
+text = "Ghost Killer"
+align = 1
+valign = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchor_top = 0.5

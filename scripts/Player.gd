@@ -3,41 +3,49 @@ extends KinematicBody2D
 var isAttacking = false
 var isJumping = false
 
-onready var animationp = $AnimationPlayer
 onready var animations = $AnimatedSprite
 
 # Jumps
-const speed = 50
-const maxSpeed = 75
+
+var max_jump_velocity
+var min_jump_velocity
+
+var max_jump_height = 2 * 16
+
+const speed = 150
+const maxSpeed = 150
 
 const jumpHeight = 300
-const time_jump = 0.7
+const time_jump = 0.2
 var jump_force
 const up = Vector2(0, -1)
 var gravity = 15
 
 func _ready():
 	animations.play("Idle")
-	
-	
 
 var motion = Vector2.ZERO
 
 func _physics_process(delta):
 		
-	gravity = (2 * jumpHeight) / pow(time_jump, 2)
-	jump_force = gravity * time_jump
+	gravity = (2 * max_jump_height) / pow(time_jump, 2)
+	jump_force = gravity * -time_jump
+	min_jump_velocity = -sqrt(2 * gravity * jumpHeight)
 	motion.y += gravity * delta
 	var friction = false
 	
 	if Input.is_action_just_pressed("Attack1")  && isAttacking == false:
-		animations.animation = "Attack1"			
-		animationp.play("Attack1")				
+		animations.animation = "Attack1"						
+		animations.flip_h = false
+		$AttackArea/CollisionPolygon2D.disabled = false
+		$AttackSound1.play()
 		isAttacking = true
 	
 	if Input.is_action_just_pressed("Attack2") && isAttacking == false:
-		animations.animation = "Attack2"			
-		animationp.play("Attack2")		
+		animations.animation = "Attack2"					
+		animations.flip_h = false
+		$AttackArea/CollisionPolygon2D.disabled = false
+		$AttackSound2.play()
 		isAttacking = true
 	
 	if Input.is_action_pressed("ui_right") && isAttacking == false:
@@ -57,7 +65,7 @@ func _physics_process(delta):
 	if is_on_floor():
 		isJumping = false
 		if Input.is_action_pressed("ui_accept"):			
-			motion.y = -jumpHeight
+			motion.y = jump_force
 			isJumping = true
 		if friction == true:
 			motion.x = lerp(motion.x, 0 , 0.5)
@@ -75,11 +83,10 @@ func _physics_process(delta):
 
 
 
-func _on_AnimatedSprite_animation_finished():
-	print("anim finished")
+func _on_AnimatedSprite_animation_finished():	
 	if animations.animation == "Attack1":
 		isAttacking = false
-		$AttackArea/CollisionPolygon2D.disabled = true		
+		$AttackArea/CollisionPolygon2D.disabled = true
 	if animations.animation == "Attack2":
 		isAttacking = false
 		$AttackArea/CollisionPolygon2D.disabled = true		
